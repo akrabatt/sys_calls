@@ -38,7 +38,7 @@ int main()
 		perror("Error truncating file\n");
 		return EXIT_FAILURE;
 	}
-	printf("File '%s' truncated to %ld bytes\n", filename, new_size);
+	printf("File '%s' truncated to %ld bytes\n", file_name, new_size);
 
 #endif
 
