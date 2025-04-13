@@ -8,16 +8,16 @@
 
 void create_files_get_fd(char *file_1, char *file_2, fds *descr)
 {
-	if((descr->file_1 = open(file_1, O_RDWR | O_CREAT, 
-					  S_IRUSR | S_IWUSR | S_IXUSR |
+	if((descr->file_1 = open(file_1, O_RDWR | O_CREAT | O_NONBLOCK, 
+					  S_IRUSR | S_IWUSR | 
 					  S_IRGRP | S_IWGRP | 
 					  S_IROTH | S_IWOTH)) == -1)
 	{ 
 		perror("Error opening file_1!\n"); exit(EXIT_FAILURE);
 	}
 
-	if((descr->file_2 = open(file_2, O_RDWR | O_CREAT, 
-					  S_IRUSR | S_IWUSR | S_IXUSR |
+	if((descr->file_2 = open(file_2, O_RDWR | O_CREAT | O_NONBLOCK, 
+					  S_IRUSR | S_IWUSR | 
 					  S_IRGRP | S_IWGRP | 
 					  S_IROTH | S_IWOTH)) == -1) 
 	{ 
@@ -25,7 +25,7 @@ void create_files_get_fd(char *file_1, char *file_2, fds *descr)
 	}
 }
 
-void check_files(fds *descr_ptr, fd_set *readfds_ptr, char file1, char file2)
+void check_files(fds *descr_ptr, fd_set *readfds_ptr, const char *file1, const char *file2)
 {
 	ssize_t bytes_read = 0;
 	char buffer[100];

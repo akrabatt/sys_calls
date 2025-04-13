@@ -38,8 +38,9 @@ int main()
 		max_fd += 1;
 
 		int activity = select(max_fd, &readfds, NULL, NULL, NULL);
+	
+		check_files(descr_ptr, readfds_ptr, f1, f2);
 	}
-	check_files(descr_ptr, readfds_ptr, f1, f2);
 
 	close(descriptors.file_1);
 	close(descriptors.file_2);

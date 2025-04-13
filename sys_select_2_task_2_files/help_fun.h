@@ -18,7 +18,7 @@ void create_files_get_fd(char *file_1, char *file_2, fds *descr);
 /**
 * check which file is ready
 */
-void check_files(fds *descr_ptr, fd_set *readfds_ptr, char file1, char file2);
+void check_files(fds *descr_ptr, fd_set *readfds_ptr, const char *file1, const char *file2);
 
 
 
