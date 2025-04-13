@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "help_fun.h"
 #include <sys/select.h>
 
@@ -7,7 +8,7 @@ int main()
 {
 	// create descriptors struct
 	fds descriptors;
-	fds descr_ptr = &descriptors;
+	fds *descr_ptr = &descriptors;
 	if(descr_ptr == NULL) { perror("Error create ptr to struct fds\n"); exit(EXIT_FAILURE); }
 
 	// files name
@@ -25,18 +26,20 @@ int main()
 	
 	// create files
 	create_files_get_fd(f1, f2, descr_ptr);
+	while(1)
+	{
+		// add descriptors 
+		FD_ZERO(&readfds);
+		FD_SET(descriptors.file_1, &readfds);
+		FD_SET(descriptors.file_2, &readfds);
 
-	// add descriptors 
-	FD_ZERO(&readfds);
-	FD_SET(descriptors.file_1, &readfds);
-	FD_SET(descriptors.file_2, &readfds);
+		// search max descriptor value
+		int max_fd = descriptors.file_1 > descriptors.file_2 ? descriptors.file_1 : descriptors.file_2;
+		max_fd += 1;
 
-	// search max descriptor value
-	int max_fd = descriptors.file_1 > descriptors.file_2 ? descriptors.file_1 : descriptors.file_2;
-	max_fd += 1;
-
-	int activity = select(max_fd, &readfds, NULL, NULL, NULL);
-
+		int activity = select(max_fd, &readfds, NULL, NULL, NULL);
+	}
+	check_files(descr_ptr, readfds_ptr, f1, f2);
 
 	close(descriptors.file_1);
 	close(descriptors.file_2);
